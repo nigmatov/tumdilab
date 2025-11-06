@@ -1,0 +1,18 @@
+GET posts/_search
+{
+  "size" : 10,
+  "_source": "content_t", 
+  "query": {
+    "script_score": {
+      "query" : {
+        "match_all" : {}
+      },
+      "script": {
+        "source": "(1.0+cosineSimilarity(params.queryVector, 'distilbert_embedding'))",
+        "params": {
+          "queryVector": []
+        }
+      }
+    }
+  }
+}
